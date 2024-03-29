@@ -20,13 +20,19 @@ def main():
     global mycol
     #redis1 = redis.Redis(host=(config['REDIS']['HOST']), password=(config['REDIS']['PASSWORD']), port=(config['REDIS']['REDISPORT']))
     #redis1 = redis.Redis(host=(os.environ['REDIS_HOST']), password=(os.environ['REDIS_PASSWORD']), port=(os.environ['REDIS_PORT']))
-    myclient = pymongo.MongoClient(os.environ['MONGODBURI'])
+
+    # You can set this logging module, so you will know when and why things do not work as expected Meanwhile, update your config.ini as:
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+
+    logging.info("COMP7940 Begin chatbot logging")
+    print("COMP7940 Begin chatbot print")
+
+    mongoUrl="mongodb://"+os.environ['MONGODBUSER']+":"+os.environ['MONGODBPWD']+"@"+os.environ['MONGODBHOST']+":10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@"+os.environ['MONGODBUSER']+"@"
+    myclient = pymongo.MongoClient(mongoUrl)
     mydb = myclient["ChatBotDB"]
 
     mycol = mydb["ChatBotCollection"]
    
-   # You can set this logging module, so you will know when and why things do not work as expected Meanwhile, update your config.ini as:
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     
     # register a dispatcher to handle message: here we register an echo dispatcher
     #echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)

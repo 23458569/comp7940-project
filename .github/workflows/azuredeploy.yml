@@ -32,7 +32,7 @@ jobs:
       - name: 'Run Azure web app deploy action'
         uses: azure/webapps-deploy@v3
         with:
-          app-name: comp7940-chatbot-keyvault
+          app-name: comp7940project
           package: comp7940registry.azurecr.io/comp7640-project-test:${{ github.sha }}
 
       - name: 'Logout' 

@@ -33,7 +33,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: comp7940project
-          package: comp7940registry.azurecr.io/comp7640-project:latest
+          image: comp7940registry.azurecr.io/comp7640-project-test:latest
 
       - name: 'Logout' 
         run: |

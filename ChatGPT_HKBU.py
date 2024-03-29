@@ -2,6 +2,8 @@ import os
 #import configparser
 import requests
 #import logging
+from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
 
 class HKBU_ChatGPT():
 #    def __init__(self,config_='./config.ini'):
@@ -13,7 +15,14 @@ class HKBU_ChatGPT():
 
     def submit(self,message):
         conversation = [{"role": "user", "content": message}]
-        url = (os.environ['CHATGPT_BASICURL']) + "/deployments/" + (os.environ['CHATGPT_MODELNAME']) + "/chat/completions/?api-version=" + (os.environ['CHATGPT_APIVERSION'])
+
+        keyVaultName = os.environ["KEY_VAULT_NAME"]
+        KVUri = f"https://{keyVaultName}.vault.azure.net"
+
+        credential = DefaultAzureCredential()
+        client = SecretClient(vault_url=KVUri, credential=credential)
+        
+        url = (client.get_secret("ChatgptBasicUrl")) + "/deployments/" + (client.get_secret("ChatgptModelName")) + "/chat/completions/?api-version=" + (client.get_secret("ChatgptApiVersion"))
         headers = { 'Content-Type': 'application/json', 'api-key': (os.environ['CHATGPT_ACCESS_TOKEN']) }
         payload = { 'messages': conversation }
         response = requests.post(url, json=payload, headers=headers)

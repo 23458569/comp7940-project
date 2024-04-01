@@ -30,7 +30,7 @@ jobs:
           push: true
           tags: comp7940registry.azurecr.io/comp7640-project-test:latest
           secrets: |
-            AZURE_CLIENT_SECRET=${{secrets.AZURE_CLIENT_SECRET}}
+            "AZURE_CLIENT_SECRET=${{secrets.AZURE_CLIENT_SECRET}}"
 
 
 #      - name: 'Push image to registry' 

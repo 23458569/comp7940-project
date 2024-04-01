@@ -2,8 +2,8 @@ import os
 #import configparser
 import requests
 #import logging
+from azure.identity import ClientSecretCredential
 from azure.keyvault.secrets import SecretClient
-from azure.identity import DefaultAzureCredential
 
 class HKBU_ChatGPT():
 #    def __init__(self,config_='./config.ini'):
@@ -19,11 +19,15 @@ class HKBU_ChatGPT():
         keyVaultName = os.environ["KEY_VAULT_NAME"]
         KVUri = f"https://{keyVaultName}.vault.azure.net"
 
-        credential = DefaultAzureCredential()
+        credential = ClientSecretCredential(
+	tenant_id= os.environ["AZURE_TENANT_ID"],
+	client_id= os.environ["AZURE_CLIENT_ID"],
+	client_secret= os.environ["AZURE_CLIENT_SECRET"]
+	)
         client = SecretClient(vault_url=KVUri, credential=credential)
         
-        url = (client.get_secret("ChatgptBasicUrl")) + "/deployments/" + (client.get_secret("ChatgptModelName")) + "/chat/completions/?api-version=" + (client.get_secret("ChatgptApiVersion"))
-        headers = { 'Content-Type': 'application/json', 'api-key': (os.environ['CHATGPT_ACCESS_TOKEN']) }
+        url = (client.get_secret("ChatgptBasicUrl").value) + "/deployments/" + (client.get_secret("ChatgptModelName").value) + "/chat/completions/?api-version=" + (client.get_secret("ChatgptApiVersion").value)
+        headers = { 'Content-Type': 'application/json', 'api-key': (client.get_secret("ChatgptAccessToken").value)  }
         payload = { 'messages': conversation }
         response = requests.post(url, json=payload, headers=headers)
         if response.status_code == 200:

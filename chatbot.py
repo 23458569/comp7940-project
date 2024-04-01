@@ -8,8 +8,8 @@ import logging
 import pymongo
 from ChatGPT_HKBU import HKBU_ChatGPT
 import json
+from azure.identity import ClientSecretCredential
 from azure.keyvault.secrets import SecretClient
-from azure.identity import DefaultAzureCredential
 
 # test workflow
 
@@ -23,10 +23,14 @@ def main():
     keyVaultName = os.environ["KEY_VAULT_NAME"]
     KVUri = f"https://{keyVaultName}.vault.azure.net"
 
-    credential = DefaultAzureCredential()
+    credential = ClientSecretCredential(
+	tenant_id= os.environ["AZURE_TENANT_ID"],
+	client_id= os.environ["AZURE_CLIENT_ID"],
+	client_secret= os.environ["AZURE_CLIENT_SECRET"]
+	)
     client = SecretClient(vault_url=KVUri, credential=credential)
 
-    updater = Updater(token=(client.get_secret("AccessToken")), use_context=True)
+    updater = Updater(token=(client.get_secret("AccessToken").value), use_context=True)
     dispatcher = updater.dispatcher
     global mycol
     #redis1 = redis.Redis(host=(config['REDIS']['HOST']), password=(config['REDIS']['PASSWORD']), port=(config['REDIS']['REDISPORT']))
@@ -38,7 +42,7 @@ def main():
     logging.info("COMP7940 Begin chatbot logging")
     print("COMP7940 Begin chatbot print")
 
-    mongoUrl="mongodb://"+client.get_secret("MongodbUser")+":"+client.get_secret("MongodbPwd")+"@"+client.get_secret("MongodbHost")+":10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@"+client.get_secret("MongodbUser")+"@"
+    mongoUrl="mongodb://"+client.get_secret("MongodbUser").value+":"+client.get_secret("MongodbPwd").value+"@"+client.get_secret("MongodbHost").value+":10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@"+client.get_secret("MongodbUser").value+"@"
     myclient = pymongo.MongoClient(mongoUrl)
     mydb = myclient["ChatBotDB"]
 

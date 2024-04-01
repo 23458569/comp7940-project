@@ -161,7 +161,7 @@ def searchByGenre(update: Update, context: CallbackContext) -> None:
                                  "Rating: "+str(item['rating']) + "\n       Review: "+item['review']
 
         
-            update.message.reply_text('Below are the first 3 results search by genre:' + searchResultTxt)
+            update.message.reply_text('Below are the results search by genre:' + searchResultTxt)
         else:
             update.message.reply_text('No result returned.')
     except (IndexError, ValueError):
@@ -194,7 +194,7 @@ def searchByMovie(update: Update, context: CallbackContext) -> None:
                                  "Rating: "+str(item['rating']) + "\n       Review: "+item['review']
 
         
-            update.message.reply_text('Below are the first 3 results search by movie name:' + searchResultTxt)
+            update.message.reply_text('Below are the results search by movie name:' + searchResultTxt)
         else:
             update.message.reply_text('No result returned.')
     except (IndexError, ValueError):
@@ -246,7 +246,7 @@ def searchByRating(update: Update, context: CallbackContext) -> None:
                                  "Rating: "+str(item['rating']) + "\n       Review: "+item['review']
 
         
-            update.message.reply_text('Below are the first 3 results search by movie name:' + searchResultTxt)
+            update.message.reply_text('Below are the results search by movie name:' + searchResultTxt)
         else:
             update.message.reply_text('No result returned.')
     except (IndexError, ValueError):

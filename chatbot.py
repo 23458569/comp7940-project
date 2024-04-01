@@ -246,7 +246,7 @@ def searchByRating(update: Update, context: CallbackContext) -> None:
                                  "Rating: "+str(item['rating']) + "\n       Review: "+item['review']
 
         
-            update.message.reply_text('Below are the results search by movie name:' + searchResultTxt)
+            update.message.reply_text('Below are the results search by rating:' + searchResultTxt)
         else:
             update.message.reply_text('No result returned.')
     except (IndexError, ValueError):

@@ -30,19 +30,13 @@ jobs:
           build-args: |
             AZURE_CLIENT_SECRET_ARG=${{secrets.AZURE_CLIENT_SECRET}}
           push: true
-          tags: comp7940registry.azurecr.io/comp7640-project-test:latest
+          tags: comp7940registry.azurecr.io/comp7640-project-workflow:latest
 
-
-#      - name: 'Push image to registry' 
-#        run: |
-#          docker build . -t comp7940registry.azurecr.io/comp7640-project-test:latest
-#          docker push comp7940registry.azurecr.io/comp7640-project-test:latest
-
-#      - name: 'Run Azure web app deploy action'
-#        uses: azure/webapps-deploy@v3
-#        with:
-#          app-name: comp7940project
-#          images: comp7940registry.azurecr.io/comp7640-project-test:latest
+      - name: 'Run Azure web app deploy action'
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: comp7940project
+          images: comp7940registry.azurecr.io/comp7640-project-workflow:latest
 
       - name: 'Logout' 
         run: |

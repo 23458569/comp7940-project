@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: 'Build and push'
-        uses: docker/build-push-action@c5
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: comp7940registry.azurecr.io/comp7640-project-test:latest
